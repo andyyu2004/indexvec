@@ -1,0 +1,12 @@
+[package]
+name = "indexvec"
+description = "Simplified copy of rustc's index crate"
+version = "0.2.0"
+edition = "2021"
+license = "MIT"
+
+[dependencies.serde]
+version = "1"
+features = ["derive"]
+# optional = true
+
