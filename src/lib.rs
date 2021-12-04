@@ -11,7 +11,7 @@ pub use idx_vec::{Enumerated, IndexVec, IntoIdx};
 #[macro_export]
 macro_rules! newtype_index {
     ($($tt:tt)*) => {
-        _newtype_index!($($tt)*);
+        $crate::_newtype_index!($($tt)*);
     };
 }
 
@@ -19,7 +19,7 @@ macro_rules! newtype_index {
 #[macro_export]
 macro_rules! newtype_index {
     ($($tt:tt)*) => {
-        _newtype_index! {
+        $crate::_newtype_index! {
             #[derive(serde::Serialize, serde::Deserialize)]
             #[serde(transparent)]
             $($tt)*
