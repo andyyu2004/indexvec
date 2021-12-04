@@ -22,6 +22,7 @@ macro_rules! newtype_index {
         $(#[$attrs])*
         #[derive(Debug, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
         #[derive($crate::Serialize, $crate::Deserialize)]
+        #[serde(transparent)]
         $vis struct $type {
             idx: usize,
         }

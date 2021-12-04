@@ -15,3 +15,9 @@ fn test_macro_syntax() {
     assert_eq!(Foo::C, Foo::new(5));
     Bar::new(0);
 }
+
+#[test]
+fn test_serde_is_transparent() {
+    let item = Item::new(42);
+    assert_eq!(serde_json::to_string(&item).unwrap(), "42");
+}
