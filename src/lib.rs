@@ -76,7 +76,7 @@ macro_rules! _newtype_index {
         impl ::std::str::FromStr for $type {
             type Err = ::std::num::ParseIntError;
 
-            fn from_str(s: &str) -> Result<Self, Self::Err> {
+            fn from_str(s: &str) -> ::std::result::Result<Self, Self::Err> {
                 s.parse::<usize>().map($crate::Idx::new)
             }
         }
