@@ -29,6 +29,12 @@ fn test_macro_syntax() {
 }
 
 #[test]
+fn test_from_str() {
+    newtype_index!(pub Bar);
+    assert_eq!("5".parse::<Bar>().unwrap(), Bar::new(5));
+}
+
+#[test]
 #[cfg(feature = "serde")]
 fn test_serde_is_transparent() {
     let item = Item::new(42);

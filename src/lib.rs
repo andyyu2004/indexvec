@@ -72,6 +72,14 @@ macro_rules! _newtype_index {
                 self.idx
             }
         }
+
+        impl ::std::str::FromStr for $type {
+            type Err = ::std::num::ParseIntError;
+
+            fn from_str(s: &str) -> Result<Self, Self::Err> {
+                s.parse::<usize>().map(Idx::new)
+            }
+        }
     };
     (
         $(#[$attrs:meta])*
