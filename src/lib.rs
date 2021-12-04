@@ -77,7 +77,7 @@ macro_rules! _newtype_index {
             type Err = ::std::num::ParseIntError;
 
             fn from_str(s: &str) -> Result<Self, Self::Err> {
-                s.parse::<usize>().map(Idx::new)
+                s.parse::<usize>().map($crate::Idx::new)
             }
         }
     };
