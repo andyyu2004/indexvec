@@ -7,22 +7,38 @@ mod idx_vec;
 pub use idx::Idx;
 pub use idx_vec::{Enumerated, IndexVec, IntoIdx};
 
-// Serde is not a feature for now as `#[cfg_attr(feature = "serde", derive(..)]`
-// doesn't seem to work as intended.
-pub use serde::{Deserialize, Serialize};
-
+#[cfg(not(feature = "serde"))]
 #[macro_export]
 macro_rules! newtype_index {
+    ($($tt:tt)*) => {
+        _newtype_index!($($tt)*);
+    };
+}
+
+#[cfg(feature = "serde")]
+#[macro_export]
+macro_rules! newtype_index {
+    ($($tt:tt)*) => {
+        _newtype_index! {
+            #[derive(serde::Serialize, serde::Deserialize)]
+            #[serde(transparent)]
+            $($tt)*
+        }
+    };
+}
+
+#[doc(hidden)]
+#[macro_export]
+macro_rules! _newtype_index {
     (
         $(#[$attrs:meta])*
-        $vis:vis struct $type:ident {
+        $vis:vis struct $type:ident
+        {
             $( $const_vis:vis const $constant:ident = $value:expr; )*
         }
     ) => {
-        $(#[$attrs])*
         #[derive(Debug, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
-        #[derive($crate::Serialize, $crate::Deserialize)]
-        #[serde(transparent)]
+        $(#[$attrs])*
         $vis struct $type {
             idx: usize,
         }
@@ -57,8 +73,14 @@ macro_rules! newtype_index {
             }
         }
     };
-    ($vis:vis $type:ident) => {
-        $crate::newtype_index!($vis struct $type {});
+    (
+        $(#[$attrs:meta])*
+        $vis:vis $type:ident
+    ) => {
+        $crate::_newtype_index! {
+            $(#[$attrs])*
+            $vis struct $type {}
+        }
     };
 }
 
