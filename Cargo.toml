@@ -4,6 +4,7 @@ description = "Simplified copy of rustc's index crate"
 version = "0.3.0"
 edition = "2021"
 license = "MIT"
+repository = "https://github.com/andyyu2004/indexvec"
 
 [dependencies.serde]
 version = "1"
