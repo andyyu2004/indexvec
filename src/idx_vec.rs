@@ -1,6 +1,6 @@
 use crate::Idx;
 use std::marker::PhantomData;
-use std::ops::{Range, RangeBounds};
+use std::ops::{Index, IndexMut, Range, RangeBounds};
 use std::{iter, slice, vec};
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -193,6 +193,22 @@ impl<I: Idx, T> IndexVec<I, T> {
     pub fn resize_to_elem(&mut self, elem: I, fill_value: impl FnMut() -> T) {
         let min_new_len = elem.index() + 1;
         self.raw.resize_with(min_new_len, fill_value);
+    }
+}
+
+impl<I: Idx, T> Index<I> for IndexVec<I, T> {
+    type Output = T;
+
+    #[inline]
+    fn index(&self, index: I) -> &T {
+        &self.raw[index.index()]
+    }
+}
+
+impl<I: Idx, T> IndexMut<I> for IndexVec<I, T> {
+    #[inline]
+    fn index_mut(&mut self, index: I) -> &mut T {
+        &mut self.raw[index.index()]
     }
 }
 
