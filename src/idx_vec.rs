@@ -9,20 +9,36 @@ pub struct IndexVec<I: Idx, T> {
     _marker: PhantomData<I>,
 }
 
+impl<I: Idx, T> Default for IndexVec<I, T> {
+    #[inline]
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl<I: Idx, T> IndexVec<I, T> {
     #[inline]
     pub fn new() -> Self {
-        IndexVec { raw: Vec::new(), _marker: PhantomData }
+        IndexVec {
+            raw: Vec::new(),
+            _marker: PhantomData,
+        }
     }
 
     #[inline]
     pub fn from_raw(raw: Vec<T>) -> Self {
-        IndexVec { raw, _marker: PhantomData }
+        IndexVec {
+            raw,
+            _marker: PhantomData,
+        }
     }
 
     #[inline]
     pub fn with_capacity(capacity: usize) -> Self {
-        IndexVec { raw: Vec::with_capacity(capacity), _marker: PhantomData }
+        IndexVec {
+            raw: Vec::with_capacity(capacity),
+            _marker: PhantomData,
+        }
     }
 
     /// Create an `IndexVec` with `n` elements, where the value of each
@@ -70,7 +86,9 @@ impl<I: Idx, T> IndexVec<I, T> {
 
     #[inline]
     pub fn into_iter_enumerated(self) -> Enumerated<I, vec::IntoIter<T>> {
-        self.raw.into_iter().enumerate().map(IntoIdx { _marker: PhantomData })
+        self.raw.into_iter().enumerate().map(IntoIdx {
+            _marker: PhantomData,
+        })
     }
 
     #[inline]
@@ -80,12 +98,16 @@ impl<I: Idx, T> IndexVec<I, T> {
 
     #[inline]
     pub fn iter_enumerated(&self) -> Enumerated<I, slice::Iter<'_, T>> {
-        self.raw.iter().enumerate().map(IntoIdx { _marker: PhantomData })
+        self.raw.iter().enumerate().map(IntoIdx {
+            _marker: PhantomData,
+        })
     }
 
     #[inline]
     pub fn indices(&self) -> iter::Map<Range<usize>, IntoIdx<I>> {
-        (0..self.len()).map(IntoIdx { _marker: PhantomData })
+        (0..self.len()).map(IntoIdx {
+            _marker: PhantomData,
+        })
     }
 
     #[inline]
@@ -95,7 +117,9 @@ impl<I: Idx, T> IndexVec<I, T> {
 
     #[inline]
     pub fn iter_enumerated_mut(&mut self) -> Enumerated<I, slice::IterMut<'_, T>> {
-        self.raw.iter_mut().enumerate().map(IntoIdx { _marker: PhantomData })
+        self.raw.iter_mut().enumerate().map(IntoIdx {
+            _marker: PhantomData,
+        })
     }
 
     #[inline]
@@ -111,7 +135,9 @@ impl<I: Idx, T> IndexVec<I, T> {
         &'a mut self,
         range: R,
     ) -> impl Iterator<Item = (I, T)> + 'a {
-        self.raw.drain(range).enumerate().map(IntoIdx { _marker: PhantomData })
+        self.raw.drain(range).enumerate().map(IntoIdx {
+            _marker: PhantomData,
+        })
     }
 
     #[inline]
@@ -145,7 +171,10 @@ impl<I: Idx, T> IndexVec<I, T> {
     }
 
     pub fn convert_index_type<Ix: Idx>(self) -> IndexVec<Ix, T> {
-        IndexVec { raw: self.raw, _marker: PhantomData }
+        IndexVec {
+            raw: self.raw,
+            _marker: PhantomData,
+        }
     }
 
     /// Grows the index vector so that it contains an entry for
